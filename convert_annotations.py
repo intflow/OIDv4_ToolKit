@@ -32,7 +32,7 @@ with open("classes.txt", "r") as myFile:
         classes[line] = num
     myFile.close()
 # step into dataset directory
-os.chdir(os.path.join("OID", "Dataset"))
+os.chdir(os.path.join("/DL_data", "OID"))
 DIRS = os.listdir(os.getcwd())
 
 # for all train, validation and test folders
