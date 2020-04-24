@@ -22,64 +22,78 @@ def convert(filename_str, coords):
 	os.chdir("Label")
 	return coords
 
-ROOT_DIR = os.getcwd()
+def main():
+	parser = argparse.ArgumentParser()
+	parser.add_argument('--data_path', help='input data path where label and meta folders are located',
+						default='Y:/OID')
+	parser.add_argument('--class_list', type=str, help='set label of classes in dataset',
+						default='classes.txt')
+	args = parser.parse_args()
+	
+	HOME = args.data_path
+	CLASS_LIST = args.class_list
+	
 
-# create dict to map class names to numbers for yolo
-classes = {}
-with open("classes.txt", "r") as myFile:
-	for num, line in enumerate(myFile, 0):
-		line = line.rstrip("\n")
-		classes[line] = num
-	myFile.close()
-# step into dataset directory
-os.chdir(os.path.join("/DL_data", "OID"))
-DIRS = os.listdir(os.getcwd())
+	# create dict to map class names to numbers for yolo
+	classes = {}
+	with open(CLASS_LIST, "r") as myFile:
+		for num, line in enumerate(myFile, 0):
+			line = line.rstrip("\n")
+			classes[line] = num
+		myFile.close()
 
-# for all train, validation and test folders
-for DIR in DIRS:
-	if os.path.isdir(DIR):
-		os.chdir(DIR)
-		print("Currently in subdirectory:", DIR)
-		
-		CLASS_DIRS = os.listdir(os.getcwd())
-		# for all class folders step into directory to change annotations
-		for CLASS_DIR in CLASS_DIRS:
-			if os.path.isdir(CLASS_DIR):
-				os.chdir(CLASS_DIR)
-				print("Converting annotations for class: ", CLASS_DIR)
-				
-				# Step into Label folder where annotations are generated
-				os.chdir("Label")
+	# step into dataset directory
+	os.chdir(HOME)
+	DIRS = os.listdir(os.getcwd())
 
-				for filename in tqdm(os.listdir(os.getcwd())):
-					filename_str = str.split(filename, ".")[0]
-					if filename.endswith(".txt"):
-						annotations = []
-						with open(filename) as f:
-							for line in f:
-								for class_type in classes:
-									line = line.replace(class_type, str(classes.get(class_type)))
-								labels = line.split()
-								try:
-									a = float(labels[1])
-								except:
-									labels[0] = labels[0]+'_'+labels[1]
-									labels[1:] = labels[2:]
-									
-								coords = np.asarray([float(labels[1]), float(labels[2]), float(labels[3]), float(labels[4])])
-								coords = convert(filename_str, coords)
-								labels[1], labels[2], labels[3], labels[4] = coords[0], coords[1], coords[2], coords[3]
-								newline = str(labels[0]) + " " + str(labels[1]) + " " + str(labels[2]) + " " + str(labels[3]) + " " + str(labels[4])
-								line = line.replace(line, newline)
-								annotations.append(line)
-							f.close()
-						os.chdir("..")
-						with open(filename, "w") as outfile:
-							for line in annotations:
-								outfile.write(line)
-								outfile.write("\n")
-							outfile.close()
-						os.chdir("Label")
-				os.chdir("..")
-				os.chdir("..")
-		os.chdir("..")
+	# for all train, validation and test folders
+	for DIR in DIRS:
+		if os.path.isdir(DIR):
+			os.chdir(DIR)
+			print("Currently in subdirectory:", DIR)
+			
+			CLASS_DIRS = os.listdir(os.getcwd())
+			# for all class folders step into directory to change annotations
+			for CLASS_DIR in CLASS_DIRS:
+				if os.path.isdir(CLASS_DIR):
+					os.chdir(CLASS_DIR)
+					print("Converting annotations for class: ", CLASS_DIR)
+					
+					# Step into Label folder where annotations are generated
+					os.chdir("Label")
+
+					for filename in tqdm(os.listdir(os.getcwd())):
+						filename_str = str.split(filename, ".")[0]
+						if filename.endswith(".txt"):
+							annotations = []
+							with open(filename) as f:
+								for line in f:
+									labels = line.split()	
+
+									#Change space to '_' in class name
+									if type(line[1]) is str:
+										labels[0] = labels[0]+'_'+labels[1]
+										labels[1:] = labels[2:]
+
+									for class_type in classes:
+										if class_type == labels[0]:
+											labels[0] = classes[class_type]
+											coords = np.asarray([float(labels[1]), float(labels[2]), float(labels[3]), float(labels[4])])
+											coords = convert(filename_str, coords)
+											labels[1], labels[2], labels[3], labels[4] = coords[0], coords[1], coords[2], coords[3]
+											newline = str(labels[0]) + " " + str(labels[1]) + " " + str(labels[2]) + " " + str(labels[3]) + " " + str(labels[4])
+											annotations.append(newline)
+								f.close()
+							os.chdir("..")
+							with open(filename, "w") as outfile:
+								for line in annotations:
+									outfile.write(line)
+									outfile.write("\n")
+								outfile.close()
+							os.chdir("Label")
+					os.chdir("..")
+					os.chdir("..")
+			os.chdir("..")
+
+if __name__ == '__main__':
+	main()
