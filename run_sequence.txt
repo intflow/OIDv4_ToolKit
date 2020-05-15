@@ -1,0 +1,8 @@
+1) get image and labels
+ - get_images.sh
+
+2) convert to YoLo format
+ - convert_annotations.py
+
+3) get list of images
+ - get_list_all.sh

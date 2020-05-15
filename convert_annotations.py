@@ -25,7 +25,7 @@ def convert(filename_str, coords):
 def main():
 	parser = argparse.ArgumentParser()
 	parser.add_argument('--data_path', help='input data path where label and meta folders are located',
-						default='Y:/OID')
+						default='Y:/OID2')
 	parser.add_argument('--class_list', type=str, help='set label of classes in dataset',
 						default='classes.txt')
 	args = parser.parse_args()
@@ -53,6 +53,7 @@ def main():
 			print("Currently in subdirectory:", DIR)
 			
 			CLASS_DIRS = os.listdir(os.getcwd())
+
 			# for all class folders step into directory to change annotations
 			for CLASS_DIR in CLASS_DIRS:
 				if os.path.isdir(CLASS_DIR):
@@ -71,12 +72,14 @@ def main():
 									labels = line.split()	
 
 									#Change space to '_' in class name
-									if type(line[1]) is str:
-										labels[0] = labels[0]+'_'+labels[1]
+									try:
+										float(labels[1])
+									except:
+										labels[0] = labels[0]+' '+labels[1]
 										labels[1:] = labels[2:]
 
 									for class_type in classes:
-										if class_type == labels[0]:
+										if labels[0] in str.split(class_type, "_"):
 											labels[0] = classes[class_type]
 											coords = np.asarray([float(labels[1]), float(labels[2]), float(labels[3]), float(labels[4])])
 											coords = convert(filename_str, coords)
