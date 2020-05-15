@@ -1,12 +1,17 @@
-<h1> Forked repository and added conversion python script </h1>
-My added script is: 
-<strong>convert_annotations.py</strong>
+<h1> Data crawling and auto-formatting for YoLo Format </h1>
+1) get image and labels
+ - get_images.sh
+This will downloads images and corresponding labels from OID (Google)
 
-Use toolkit normally to gather images from open images dataset. After gathering images just run from root directory:
-```bash
-python convert_annotations.py
-```
+2) convert to YoLo format
+ - convert_annotations.py
 This will generate .txt annotation files in proper format for custom object detection with YOLOv3. The text files are generated in folder with images.
+
+3) get list of images
+ - get_list_all.sh
+This will generate lists of dataset in .txt
+Use this lists to train YoLo models
+
 
 <h1 align="center"> ~ OIDv4 ToolKit ~ </h1>
 
