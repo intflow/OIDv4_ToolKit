@@ -100,14 +100,14 @@ def main():
 						border_x = 0
 						border_y = 0
 						if ratio_src < ratio_target:
-							target_x = size_src[1] * ratio_target
+							target_x = size_src[0] * ratio_target
 							border_x = int((target_x - size_src[1]) * 0.5)
 							img_src = cv2.copyMakeBorder(img_src, 0, 0, border_x, border_x, cv2.BORDER_CONSTANT)
 							size_src = img_src.shape
-						elif ratio_src < ratio_target: 
-							target_y = size_src[0] * ratio_target
-							border_y = int((target_Y - size_src[0]) * 0.5)
-							img_src = cv2.copyMakeBorder(img_src,border_y, border_y, 0, 0, , cv2.BORDER_CONSTANT)
+						elif ratio_src > ratio_target: 
+							target_y = size_src[1] / ratio_target
+							border_y = int((target_y - size_src[0]) * 0.5)
+							img_src = cv2.copyMakeBorder(img_src,border_y, border_y, 0, 0, cv2.BORDER_CONSTANT)
 							size_src = img_src.shape
 
 						dst = cv2.resize(img_src, dsize=(TARGET_X, TARGET_Y), interpolation=cv2.INTER_AREA)
