@@ -98,12 +98,18 @@ def main():
 						ratio_target = TARGET_X / TARGET_Y
 						
 						border_x = 0
+						border_y = 0
 						if ratio_src < ratio_target:
-							target_x = size_src[0] * ratio_target
+							target_x = size_src[1] * ratio_target
 							border_x = int((target_x - size_src[1]) * 0.5)
 							img_src = cv2.copyMakeBorder(img_src, 0, 0, border_x, border_x, cv2.BORDER_CONSTANT)
 							size_src = img_src.shape
-							
+						elif ratio_src < ratio_target: 
+							target_y = size_src[0] * ratio_target
+							border_y = int((target_Y - size_src[0]) * 0.5)
+							img_src = cv2.copyMakeBorder(img_src,border_y, border_y, 0, 0, , cv2.BORDER_CONSTANT)
+							size_src = img_src.shape
+
 						dst = cv2.resize(img_src, dsize=(TARGET_X, TARGET_Y), interpolation=cv2.INTER_AREA)
 						cv2.imwrite(KITTI_IMAGE_PATH+'/'+filename_str+'.jpg', dst)
 						r_x = TARGET_X / size_src[1]
@@ -124,12 +130,19 @@ def main():
 								if ratio_src < ratio_target:
 									pos_x1 = int((border_x + pos_x1) * r_x)
 									pos_x2 = int((border_x + pos_x2) * r_x)
+									pos_y1 = int(pos_y1 * r_y)
+									pos_y2 = int(pos_y2 * r_y)
+
+								elif ratio_src > ratio_target:
+									pos_x1 = int(pos_x1 * r_x)
+									pos_x2 = int(pos_x2 * r_x)
+									pos_y1 = int((border_y + pos_y1) * r_y)
+									pos_y2 = int((border_y + pos_y2) * r_y)
 								else:
 									pos_x1 = int(pos_x1 * r_x)
 									pos_x2 = int(pos_x2 * r_x)
-								
-								pos_y1 = int(pos_y1 * r_y)
-								pos_y2 = int(pos_y2 * r_y)
+									pos_y1 = int(pos_y1 * r_y)
+									pos_y2 = int(pos_y2 * r_y)
 
 								line_modif = labels[0].lower() + ' 0.0 0 0.0 ' + str(pos_x1) + ' ' +str(pos_y1) + ' ' + str(pos_x2) + ' ' +str(pos_y2) + ' 0.0 0.0 0.0 0.0 0.0 0.0 0.0\n'
 								
