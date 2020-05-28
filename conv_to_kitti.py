@@ -26,11 +26,11 @@ def convert(filename_str, coords):
 def main():
 	parser = argparse.ArgumentParser()
 	parser.add_argument('--data_path', help='input data path where label and meta folders are located',
-						default='Y:/OID_jetson_test')
+						default='Y:/OID_jetson')
 	parser.add_argument('--class_list', type=str, help='set label of classes in dataset',
 						default='classes.txt')
 	parser.add_argument('--tag', type=str, help='set label of classes in dataset',
-						default='Monkey50')
+						default='Monkey500')
 	parser.add_argument('--img_x', type=int, help='set x resolution',
 						default=640)
 	parser.add_argument('--img_y', type=int, help='set y resolution',
