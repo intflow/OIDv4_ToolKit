@@ -130,7 +130,7 @@ def main():
 								pos_y1 = int(pos_y1 * r_y)
 								pos_y2 = int(pos_y2 * r_y)
 
-								line_modif = labels[0] + ' 0.0 0 0.0 ' + str(pos_x1) + ' ' +str(pos_y1) + ' ' + str(pos_x2) + ' ' +str(pos_y2) + ' 0.0 0.0 0.0 0.0 0.0 0.0 0.0\n'
+								line_modif = labels[0].lower() + ' 0.0 0 0.0 ' + str(pos_x1) + ' ' +str(pos_y1) + ' ' + str(pos_x2) + ' ' +str(pos_y2) + ' 0.0 0.0 0.0 0.0 0.0 0.0 0.0\n'
 								
 
 								f_o.write(line_modif)
