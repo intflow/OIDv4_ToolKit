@@ -102,7 +102,8 @@ def main():
 							target_x = size_src[0] * ratio_target
 							border_x = int((target_x - size_src[1]) * 0.5)
 							img_src = cv2.copyMakeBorder(img_src, 0, 0, border_x, border_x, cv2.BORDER_CONSTANT)
-
+							size_src = img_src.shape
+							
 						dst = cv2.resize(img_src, dsize=(TARGET_X, TARGET_Y), interpolation=cv2.INTER_AREA)
 						cv2.imwrite(KITTI_IMAGE_PATH+'/'+filename_str+'.jpg', dst)
 						r_x = TARGET_X / size_src[1]
