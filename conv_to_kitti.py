@@ -32,9 +32,9 @@ def main():
 	parser.add_argument('--tag', type=str, help='set label of classes in dataset',
 						default='Monkey500')
 	parser.add_argument('--img_x', type=int, help='set x resolution',
-						default=640)
+						default=1280)
 	parser.add_argument('--img_y', type=int, help='set y resolution',
-						default=480)
+						default=720)
 	args = parser.parse_args()
 	
 	HOME = args.data_path
